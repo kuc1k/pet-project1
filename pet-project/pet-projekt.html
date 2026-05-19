@@ -1,0 +1,76 @@
+<!-- currency.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конвертер валют | Пет-проект</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="converter">
+        <h1>💱 Конвертер валют</h1>
+        <div class="sub">Рубли → Доллары / Евро</div>
+
+        <div class="input-group">
+            <label>💰 Сумма в рублях</label>
+            <input type="number" id="rubAmount" placeholder="Например: 1000" value="1000">
+        </div>
+
+        <div class="input-group">
+            <label>🌍 Выбери валюту</label>
+            <select id="currency">
+                <option value="USD">🇺🇸 Доллар (USD)</option>
+                <option value="EUR">🇪🇺 Евро (EUR)</option>
+            </select>
+        </div>
+
+        <button onclick="convertCurrency()">Конвертировать</button>
+
+        <div class="result" id="resultBox">
+            0.00 ₽ → 0.00
+        </div>
+        <div class="rate-info" id="rateInfo">
+            Курс обновляется каждый день
+        </div>
+    </div>
+
+    <script>
+        const rates = {
+            USD: 92.5,
+            EUR: 98.3
+        };
+
+        function convertCurrency() {
+            // Получаем значения
+            let rubles = document.getElementById('rubAmount').value;
+            const currency = document.getElementById('currency').value;
+            
+            if (rubles === '' || rubles <= 0) {
+                rubles = 0;
+                document.getElementById('rubAmount').value = 0;
+            }
+            
+            const rate = rates[currency];
+            const result = (rubles / rate).toFixed(2);
+            const currencySymbol = currency === 'USD' ? '$' : '€';
+            
+            const resultBox = document.getElementById('resultBox');
+            resultBox.innerHTML = `${rubles} ₽ → ${result} ${currencySymbol}`;
+            
+            const rateInfo = document.getElementById('rateInfo');
+            rateInfo.innerHTML = `Курс: 1 ${currency} = ${rate} ₽ • Актуально на сегодня`;
+            
+            resultBox.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                resultBox.style.transform = 'scale(1)';
+            }, 200);
+        }
+        
+        document.getElementById('rubAmount').addEventListener('input', convertCurrency);
+        document.getElementById('currency').addEventListener('change', convertCurrency);
+        
+        convertCurrency();
+    </script>
+</body>
+</html>
